@@ -1,0 +1,91 @@
+\c klee687assign2db
+
+\COPY Team FROM /gaul/s1/student/2016/klee687/team.txt (DELIMITER('|'));
+
+INSERT INTO Team VALUES('99','Colorado','Avalanche');
+INSERT INTO Team VALUES('88','New York','Rangers');
+INSERT INTO Team VALUES('78','Ottawa','Senators');
+INSERT INTO Team VALUES('66','Edmonton','Oilers');
+INSERT INTO Team VALUES('69','Vancouver','Darkmemes');
+
+INSERT INTO RefsOfficial VALUES('99', 'Hugh', 'Grant', 'Toronto');
+INSERT INTO RefsOfficial VALUES('22', 'Courtney', 'Fox', 'New York');
+INSERT INTO RefsOfficial VALUES('33', 'Rosie', 'Odonnell', 'Ottawa');
+INSERT INTO RefsOfficial VALUES('66', 'David', 'Letterman', 'Edmonton');
+INSERT INTO RefsOfficial VALUES('11', 'Regis', 'Philbin', 'Toronto');
+INSERT INTO RefsOfficial VALUES('12', 'Rosie', 'Fox', 'Ottawa');
+INSERT INTO RefsOfficial VALUES('55', 'Hangry','Banana','Brampton');
+
+INSERT INTO Game VALUES('21','Toronto','Feb 18, 2018','11');
+INSERT INTO Game VALUES('31','Toronto','Dec 20, 2018','33');
+INSERT INTO Game VALUES('12','Ottawa','Dec 24, 2018','22');
+INSERT INTO Game VALUES('15','New York','Dec 20, 2018','11');
+INSERT INTO Game VALUES('13','New York','Jan 7, 2018','12');
+INSERT INTO Game VALUES('10','Ottawa','Dec 20, 2018','12');
+INSERT INTO Game VALUES('14','Toronto','Jan 8, 2018','33');
+
+INSERT INTO Plays VALUES('21','12','3');
+INSERT INTO Plays VALUES('21','11','2');
+
+INSERT INTO Plays VALUES('31','12','6');
+INSERT INTO Plays VALUES('31','66','2');
+
+INSERT INTO Plays VALUES('12','78','2');
+INSERT INTO Plays VALUES('12','88','3');
+
+INSERT INTO Plays VALUES('15','88','1');
+INSERT INTO Plays VALUES('15','11','2');
+
+INSERT INTO Plays VALUES('13','66','5');
+INSERT INTO Plays VALUES('13','12','2');
+
+INSERT INTO Plays VALUES('10','66','4');
+INSERT INTO Plays VALUES('10','88','2');
+
+INSERT INTO Plays VALUES('14','12','3');
+INSERT INTO Plays VALUES('14','11','1');
+
+INSERT INTO OfficialRegular VALUES('21','11');
+INSERT INTO OfficialRegular VALUES('21','12');
+
+INSERT INTO OfficialRegular VALUES('31','33');
+INSERT INTO OfficialRegular VALUES('31','22');
+INSERT INTO OfficialRegular VALUES('31','12');
+
+INSERT INTO OfficialRegular VALUES('12','22');
+INSERT INTO OfficialRegular VALUES('12','33');
+INSERT INTO OfficialRegular VALUES('12','66');
+
+INSERT INTO OfficialRegular VALUES('15','22');
+INSERT INTO OfficialRegular VALUES('15','11');
+
+INSERT INTO OfficialRegular VALUES('13','12');
+INSERT INTO OfficialRegular VALUES('13','33');
+
+INSERT INTO OfficialRegular VALUES('10','11');
+INSERT INTO OfficialRegular VALUES('10','12');
+INSERT INTO OfficialRegular VALUES('10','33');
+
+INSERT INTO OfficialRegular VALUES('14','33');
+INSERT INTO OfficialRegular VALUES('14','11');
+
+\dt
+
+SELECT * FROM Game;
+SELECT * FROM Plays;
+SELECT * FROM RefsOfficial;
+SELECT * FROM Team;
+SELECT * FROM Officialregular;
+
+UPDATE Team SET teamname='Maple Leafs' WHERE teamname='Maple Leaves';
+UPDATE Plays SET score='3' WHERE teamID='12';
+
+UPDATE Game SET date='Jan 1, 2018' FROM Officialregular r
+JOIN game g ON g.gameid = r.gameid
+JOIN Refsofficial o ON o.officialid = r.officialid WHERE r.officialid='66';
+
+SELECT * FROM Game;
+SELECT * FROM Plays;
+SELECT * FROM RefsOfficial;
+SELECT * FROM Team;
+SELECT * FROM Officialregular;

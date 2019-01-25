@@ -1,0 +1,193 @@
+\c klee687assign2db;
+You are now connected to database "klee687assign2db" as user "klee687".
+SELECT teamname FROM Team;
+  teamname
+-------------
+ Knights
+ Black Hawks
+ Flyers
+ Red Wings
+ Avalanche
+ Rangers
+ Senators
+ Oilers
+ Darkmemes
+ Maple Leafs
+(10 rows)
+
+SELECT gamecity FROM Game GROUP BY gamecity HAVING COUNT(gamecity)<2;
+ gamecity
+----------
+(0 rows)
+
+SELECT * FROM refsofficial ORDER BY Firstname;
+ officialid | firstname | lastname  |   city
+------------+-----------+-----------+----------
+ 22         | Courtney  | Cox       | New York
+ 66         | David     | Letterman | Edmonton
+ 55         | Hangry    | Banana    | Brampton
+ 99         | Hugh      | Grant     | Toronto
+ 11         | Regis     | Philbin   | Toronto
+ 33         | Rosie     | Odonnell  | Ottawa
+ 12         | Rosie     | Cox       | Ottawa
+(7 rows)
+
+SELECT firstname, lastname FROM refsofficial WHERE city = 'Ottawa' OR city = 'New York';
+ firstname | lastname
+-----------+----------
+ Courtney  | Cox
+ Rosie     | Odonnell
+ Rosie     | Cox
+(3 rows)
+
+SELECT DISTINCT lastname FROM refsofficial, game WHERE game.headofficialid = refsofficial.officialid;
+ lastname
+----------
+ Cox
+ Philbin
+ Odonnell
+(3 rows)
+
+SELECT firstname, lastname FROM refsofficial WHERE city like '%on%';
+ firstname | lastname
+-----------+-----------
+ Hugh      | Grant
+ David     | Letterman
+ Regis     | Philbin
+ Hangry    | Banana
+(4 rows)
+
+SELECT g.gameid, g.gamecity, t.teamcity, t.teamname, p.score
+FROM Plays p
+JOIN Game g ON g.gameid = p.gameid
+JOIN Team t ON t.teamid = p.teamid
+ORDER BY g.gameid;
+ gameid | gamecity | teamcity |  teamname   | score
+--------+----------+----------+-------------+-------
+ 10     | Ottawa   | New York | Rangers     |     2
+ 10     | Ottawa   | Edmonton | Oilers      |     4
+ 12     | Ottawa   | Ottawa   | Senators    |     2
+ 12     | Ottawa   | New York | Rangers     |     3
+ 13     | New York | Edmonton | Oilers      |     5
+ 13     | New York | Toronto  | Maple Leafs |     3
+ 14     | Toronto  | Toronto  | Maple Leafs |     3
+ 14     | Toronto  | Detroit  | Red Wings   |     1
+ 15     | New York | New York | Rangers     |     1
+ 15     | New York | Detroit  | Red Wings   |     2
+ 21     | Toronto  | Detroit  | Red Wings   |     2
+ 21     | Toronto  | Toronto  | Maple Leafs |     3
+ 31     | Toronto  | Toronto  | Maple Leafs |     3
+ 31     | Toronto  | Edmonton | Oilers      |     2
+(14 rows)
+
+SELECT Sum(score) AS Rangers
+FROM Plays
+WHERE Plays.teamid = '88';
+ rangers
+---------
+       6
+(1 row)
+
+SELECT teamname, Avg(score)
+FROM Plays,Team
+WHERE Team.teamid = Plays.teamid
+GROUP BY teamname;
+  teamname   |        avg
+-------------+--------------------
+ Oilers      | 3.6666666666666667
+ Senators    | 2.0000000000000000
+ Red Wings   | 1.6666666666666667
+ Maple Leafs | 3.0000000000000000
+ Rangers     | 2.0000000000000000
+(5 rows)
+
+CREATE VIEW Question_10_From_Part3 AS
+SELECT DISTINCT Plays.gameid,
+        Game.gamecity AS "Game At",
+        Team.teamname AS "Team Name",
+        Team.teamcity AS "Team City",
+        Plays.score
+        FROM Game,Team,Plays
+        WHERE Game.gameid NOT IN(SELECT DISTINCT Game.gameid FROM Game, Team, Plays
+        WHERE Game.gameid=Plays.gameid AND Plays.teamid=Team.teamid AND Game.gamecity=Team.teamcity)
+        AND Game.gameid=Plays.gameid AND Plays.teamid=Team.teamid ORDER BY Plays.gameid;
+CREATE VIEW
+SELECT * FROM Question_10_From_Part3;
+ gameid | Game At  |  Team Name  | Team City | score
+--------+----------+-------------+-----------+-------
+ 10     | Ottawa   | Oilers      | Edmonton  |     4
+ 10     | Ottawa   | Rangers     | New York  |     2
+ 13     | New York | Maple Leafs | Toronto   |     3
+ 13     | New York | Oilers      | Edmonton  |     5
+(4 rows)
+
+SELECT firstname, lastname FROM Refsofficial, Game, Plays WHERE Game.headofficialid = Refsofficial.officialid AND Game.gameid=Plays.gameid AND Plays.teamid = '12';
+ firstname | lastname
+-----------+----------
+ Regis     | Philbin
+ Rosie     | Odonnell
+ Rosie     | Cox
+ Rosie     | Odonnell
+(4 rows)
+
+SELECT DISTINCT teamcity, teamname FROM team, plays WHERE team.teamid NOT IN(SELECT teamid FROM Plays);
+   teamcity   |  teamname
+--------------+-------------
+ Colorado     | Avalanche
+ Chicago      | Black Hawks
+ London       | Knights
+ Philadelphia | Flyers
+ Vancouver    | Darkmemes
+(5 rows)
+
+SELECT DISTINCT teamcity, teamname FROM team, plays WHERE Plays.gameid NOT IN(SELECT gameid FROM Plays WHERE teamid ='12') AND Team.teamid = Plays.teamid;
+ teamcity | teamname
+----------+-----------
+ Ottawa   | Senators
+ New York | Rangers
+ Edmonton | Oilers
+ Detroit  | Red Wings
+(4 rows)
+
+SELECT r.firstname, r.lastname
+FROM Refsofficial r
+JOIN Officialregular o ON o.officialid = r.officialid
+GROUP BY r.firstname,r.lastname HAVING COUNT(o.officialid)>1;
+ firstname | lastname
+-----------+----------
+ Regis     | Philbin
+ Rosie     | Odonnell
+ Courtney  | Cox
+ Rosie     | Cox
+(4 rows)
+
+SELECT r.firstname, r.lastname, r.city, g.gameid
+FROM Refsofficial r
+JOIN Officialregular o ON o.officialid = r.officialid
+JOIN Game g on g.gameid = o.gameid
+join Team t on t.teamcity = r.city;
+ firstname | lastname  |   city   | gameid
+-----------+-----------+----------+--------
+ Regis     | Philbin   | Toronto  | 21
+ Rosie     | Cox       | Ottawa   | 21
+ Rosie     | Odonnell  | Ottawa   | 31
+ Courtney  | Cox       | New York | 31
+ Rosie     | Cox       | Ottawa   | 31
+ Courtney  | Cox       | New York | 12
+ Rosie     | Odonnell  | Ottawa   | 12
+ David     | Letterman | Edmonton | 12
+ Courtney  | Cox       | New York | 15
+ Regis     | Philbin   | Toronto  | 15
+ Rosie     | Cox       | Ottawa   | 13
+ Rosie     | Odonnell  | Ottawa   | 13
+ Regis     | Philbin   | Toronto  | 10
+ Rosie     | Cox       | Ottawa   | 10
+ Rosie     | Odonnell  | Ottawa   | 10
+ Rosie     | Odonnell  | Ottawa   | 14
+ Regis     | Philbin   | Toronto  | 14
+(17 rows)
+
+
+
+
+

@@ -1,0 +1,18 @@
+DROP DATABASE klee687assign2db;
+CREATE DATABASE klee687assign2db;
+\c klee687assign2db
+REVOKE CONNECT ON DATABASE klee687assign2db FROM public;
+GRANT CONNECT ON DATABASE klee687assign2db to lreid, mshirpou, mfinnie3, mshermin, yliu888;
+\dt;
+
+CREATE TABLE Team(TeamID CHAR(2) NOT NULL, TeamCity VARCHAR(15), TeamName VARCHAR(20), PRIMARY KEY (TeamID));
+CREATE TABLE Game(GameID CHAR(2) NOT NULL, GameCity VARCHAR(15), Date date, HeadOfficialID CHAR(2) NOT NULL, PRIMARY KEY(GameID));
+CREATE TABLE refsOfficial(OfficialID CHAR(2) NOT NULL, FirstName VARCHAR(20), LastName VARCHAR(20), City VARCHAR(15), PRIMARY KEY(OfficialID));
+CREATE TABLE Plays(GameID CHAR(2) NOT NULL, TeamID CHAR(2) NOT NULL, Score INT, PRIMARY KEY (TeamID,GameID));
+CREATE TABLE OfficialRegular(GameID CHAR(2) NOT NULL, OfficialID CHAR(2) NOT NULL, PRIMARY KEY (OfficialID,GameID));
+
+ALTER TABLE GAME ADD CONSTRAINT HeadOfficialID FOREIGN KEY (HeadOfficialID) REFERENCES refsofficial(OfficialID);
+ALTER TABLE Plays ADD CONSTRAINT TeamID FOREIGN KEY (TeamID) REFERENCES Team(TeamID) ON DELETE CASCADE;
+ALTER TABLE OfficialRegular ADD CONSTRAINT OfficialID FOREIGN KEY (officialid) REFERENCES refsofficial(officialID);
+
+\dt

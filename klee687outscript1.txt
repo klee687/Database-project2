@@ -1,0 +1,43 @@
+DROP DATABASE klee687assign2db;
+DROP DATABASE
+CREATE DATABASE klee687assign2db;
+CREATE DATABASE
+\c klee687assign2db
+You are now connected to database "klee687assign2db" as user "klee687".
+REVOKE CONNECT ON DATABASE klee687assign2db FROM public;
+REVOKE
+GRANT CONNECT ON DATABASE klee687assign2db to lreid, mshirpou, mfinnie3, mshermin, yliu888;
+GRANT
+\dt;
+No relations found.
+CREATE TABLE Team(TeamID CHAR(2) NOT NULL, TeamCity VARCHAR(15), TeamName VARCHAR(20), PRIMARY KEY (TeamID));
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "team_pkey" for table "team"
+CREATE TABLE
+CREATE TABLE Game(GameID CHAR(2) NOT NULL, GameCity VARCHAR(15), Date date, HeadOfficialID CHAR(2) NOT NULL, PRIMARY KEY(GameID));
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "game_pkey" for table "game"
+CREATE TABLE
+CREATE TABLE refsOfficial(OfficialID CHAR(2) NOT NULL, FirstName VARCHAR(20), LastName VARCHAR(20), City VARCHAR(15), PRIMARY KEY(OfficialID));
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "refsofficial_pkey" for table "refsofficial"
+CREATE TABLE
+CREATE TABLE Plays(GameID CHAR(2) NOT NULL, TeamID CHAR(2) NOT NULL, Score INT, PRIMARY KEY (TeamID,GameID));
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "plays_pkey" for table "plays"
+CREATE TABLE
+CREATE TABLE OfficialRegular(GameID CHAR(2) NOT NULL, OfficialID CHAR(2) NOT NULL, PRIMARY KEY (OfficialID,GameID));
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "officialregular_pkey" for table "officialregular"
+CREATE TABLE
+ALTER TABLE GAME ADD CONSTRAINT HeadOfficialID FOREIGN KEY (HeadOfficialID) REFERENCES refsofficial(OfficialID);
+ALTER TABLE
+ALTER TABLE Plays ADD CONSTRAINT TeamID FOREIGN KEY (TeamID) REFERENCES Team(TeamID) ON DELETE CASCADE;
+ALTER TABLE
+ALTER TABLE OfficialRegular ADD CONSTRAINT OfficialID FOREIGN KEY (officialid) REFERENCES refsofficial(officialID);
+ALTER TABLE
+\dt
+             List of relations
+ Schema |      Name       | Type  |  Owner
+--------+-----------------+-------+---------
+ public | game            | table | klee687
+ public | officialregular | table | klee687
+ public | plays           | table | klee687
+ public | refsofficial    | table | klee687
+ public | team            | table | klee687
+(5 rows)

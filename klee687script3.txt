@@ -1,0 +1,52 @@
+\c klee687assign2db;
+
+SELECT teamname FROM Team;
+SELECT gamecity FROM Game GROUP BY gamecity HAVING COUNT(gamecity)<2;
+SELECT * FROM refsofficial ORDER BY Firstname;
+SELECT firstname, lastname FROM refsofficial WHERE city = 'Ottawa' OR city = 'New York';
+SELECT DISTINCT lastname FROM refsofficial, game WHERE game.headofficialid = refsofficial.officialid;
+SELECT firstname, lastname FROM refsofficial WHERE city like '%on%';
+
+SELECT g.gameid, g.gamecity, t.teamcity, t.teamname, p.score
+FROM Plays p
+JOIN Game g ON g.gameid = p.gameid
+JOIN Team t ON t.teamid = p.teamid
+ORDER BY g.gameid;
+
+SELECT Sum(score) AS Rangers
+FROM Plays
+WHERE Plays.teamid = '88';
+
+SELECT teamname, Avg(score)
+FROM Plays,Team
+WHERE Team.teamid = Plays.teamid
+GROUP BY teamname;
+
+CREATE VIEW Question_10_From_Part3 AS
+SELECT DISTINCT Plays.gameid,
+        Game.gamecity AS "Game At",
+        Team.teamname AS "Team Name",
+        Team.teamcity AS "Team City",
+        Plays.score
+        FROM Game,Team,Plays
+        WHERE Game.gameid NOT IN(SELECT DISTINCT Game.gameid FROM Game, Team, Plays
+        WHERE Game.gameid=Plays.gameid AND Plays.teamid=Team.teamid AND Game.gamecity=Team.teamcity)
+        AND Game.gameid=Plays.gameid AND Plays.teamid=Team.teamid ORDER BY Plays.gameid;
+SELECT * FROM Question_10_From_Part3;
+
+
+SELECT firstname, lastname FROM Refsofficial, Game, Plays WHERE Game.headofficialid = Refsofficial.officialid AND Game.gameid=Plays.gameid AND Plays.teamid = '12';
+
+SELECT DISTINCT teamcity, teamname FROM team, plays WHERE team.teamid NOT IN(SELECT teamid FROM Plays);
+SELECT DISTINCT teamcity, teamname FROM team, plays WHERE Plays.gameid NOT IN(SELECT gameid FROM Plays WHERE teamid ='12') AND Team.teamid = Plays.teamid;
+
+SELECT r.firstname, r.lastname
+FROM Refsofficial r
+JOIN Officialregular o ON o.officialid = r.officialid
+GROUP BY r.firstname,r.lastname HAVING COUNT(o.officialid)>1;
+
+SELECT r.firstname, r.lastname, r.city, g.gameid
+FROM Refsofficial r
+JOIN Officialregular o ON o.officialid = r.officialid
+JOIN Game g on g.gameid = o.gameid
+join Team t on t.teamcity = r.city;

@@ -1,0 +1,30 @@
+\c klee687assign2db
+
+CREATE VIEW First_View
+AS SELECT GameID, gamecity, firstname, lastname, city
+FROM Game, Refsofficial;
+SELECT * FROM First_View;
+
+ALTER TABLE Plays ADD CHECK(score>0);
+UPDATE Plays SET score = -1;
+
+SELECT * FROM Refsofficial;
+DELETE FROM Refsofficial WHERE Refsofficial.lastname='Banana';
+SELECT * FROM Refsofficial;
+
+SELECT * FROM Team;
+DELETE FROM TEAM WHERE Team.teamid NOT IN(SELECT teamid FROM Plays);
+SELECT * FROM Team;
+
+SELECT g.gameid, g.gamecity, t.teamcity, t.teamname, p.score
+FROM Plays p
+JOIN Team t on t.teamid = p.teamID
+JOIN Game g on g.gameid = p.gameID;
+
+DELETE FROM Team WHERE Team.teamname='Maple Leafs';
+
+SELECT g.gameid, g.gamecity, t.teamcity, t.teamname, p.score
+FROM Plays p
+JOIN Team t on t.teamid = p.teamID
+JOIN Game g on g.gameid = p.gameID;
+/* ON DELETE CASCADE from ("ALTER TABLE Plays ADD CONSTRAINT TeamID FOREIGN KEY (TeamID) REFERENCES Team(TeamID) ON CASCADE") removes games that were played by deleted teams. "ON DELETE CASCADE" violates foreign key constraint 'TeamID' on table 'Plays' by updating of deleting on table 'team'.*/

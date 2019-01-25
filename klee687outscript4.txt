@@ -1,0 +1,160 @@
+\c klee687assign2db
+You are now connected to database "klee687assign2db" as user "klee687".
+CREATE VIEW First_View
+AS SELECT GameID, gamecity, firstname, lastname, city
+FROM Game, Refsofficial;
+CREATE VIEW
+SELECT * FROM First_View;
+ gameid | gamecity | firstname | lastname  |   city
+--------+----------+-----------+-----------+----------
+ 21     | Toronto  | Hugh      | Grant     | Toronto
+ 21     | Toronto  | Courtney  | Cox       | New York
+ 21     | Toronto  | Rosie     | Odonnell  | Ottawa
+ 21     | Toronto  | David     | Letterman | Edmonton
+ 21     | Toronto  | Regis     | Philbin   | Toronto
+ 21     | Toronto  | Rosie     | Cox       | Ottawa
+ 21     | Toronto  | Hangry    | Banana    | Brampton
+ 31     | Toronto  | Hugh      | Grant     | Toronto
+ 31     | Toronto  | Courtney  | Cox       | New York
+ 31     | Toronto  | Rosie     | Odonnell  | Ottawa
+ 31     | Toronto  | David     | Letterman | Edmonton
+ 31     | Toronto  | Regis     | Philbin   | Toronto
+ 31     | Toronto  | Rosie     | Cox       | Ottawa
+ 31     | Toronto  | Hangry    | Banana    | Brampton
+ 12     | Ottawa   | Hugh      | Grant     | Toronto
+ 12     | Ottawa   | Courtney  | Cox       | New York
+ 12     | Ottawa   | Rosie     | Odonnell  | Ottawa
+ 12     | Ottawa   | David     | Letterman | Edmonton
+ 12     | Ottawa   | Regis     | Philbin   | Toronto
+ 12     | Ottawa   | Rosie     | Cox       | Ottawa
+ 12     | Ottawa   | Hangry    | Banana    | Brampton
+ 15     | New York | Hugh      | Grant     | Toronto
+ 15     | New York | Courtney  | Cox       | New York
+ 15     | New York | Rosie     | Odonnell  | Ottawa
+ 15     | New York | David     | Letterman | Edmonton
+ 15     | New York | Regis     | Philbin   | Toronto
+ 15     | New York | Rosie     | Cox       | Ottawa
+ 15     | New York | Hangry    | Banana    | Brampton
+ 13     | New York | Hugh      | Grant     | Toronto
+ 13     | New York | Courtney  | Cox       | New York
+ 13     | New York | Rosie     | Odonnell  | Ottawa
+ 13     | New York | David     | Letterman | Edmonton
+ 13     | New York | Regis     | Philbin   | Toronto
+ 13     | New York | Rosie     | Cox       | Ottawa
+ 13     | New York | Hangry    | Banana    | Brampton
+ 10     | Ottawa   | Hugh      | Grant     | Toronto
+ 10     | Ottawa   | Courtney  | Cox       | New York
+ 10     | Ottawa   | Rosie     | Odonnell  | Ottawa
+ 10     | Ottawa   | David     | Letterman | Edmonton
+ 10     | Ottawa   | Regis     | Philbin   | Toronto
+ 10     | Ottawa   | Rosie     | Cox       | Ottawa
+ 10     | Ottawa   | Hangry    | Banana    | Brampton
+ 14     | Toronto  | Hugh      | Grant     | Toronto
+ 14     | Toronto  | Courtney  | Cox       | New York
+ 14     | Toronto  | Rosie     | Odonnell  | Ottawa
+ 14     | Toronto  | David     | Letterman | Edmonton
+ 14     | Toronto  | Regis     | Philbin   | Toronto
+ 14     | Toronto  | Rosie     | Cox       | Ottawa
+ 14     | Toronto  | Hangry    | Banana    | Brampton
+(49 rows)
+
+ALTER TABLE Plays ADD CHECK(score>0);
+ALTER TABLE
+UPDATE Plays SET score = -1;
+ERROR:  new row for relation "plays" violates check constraint "plays_score_check"
+DETAIL:  Failing row contains (21, 11, -1).
+SELECT * FROM Refsofficial;
+ officialid | firstname | lastname  |   city
+------------+-----------+-----------+----------
+ 99         | Hugh      | Grant     | Toronto
+ 22         | Courtney  | Cox       | New York
+ 33         | Rosie     | Odonnell  | Ottawa
+ 66         | David     | Letterman | Edmonton
+ 11         | Regis     | Philbin   | Toronto
+ 12         | Rosie     | Cox       | Ottawa
+ 55         | Hangry    | Banana    | Brampton
+(7 rows)
+
+DELETE FROM Refsofficial WHERE Refsofficial.lastname='Banana';
+DELETE 1
+SELECT * FROM Refsofficial;
+ officialid | firstname | lastname  |   city
+------------+-----------+-----------+----------
+ 99         | Hugh      | Grant     | Toronto
+ 22         | Courtney  | Cox       | New York
+ 33         | Rosie     | Odonnell  | Ottawa
+ 66         | David     | Letterman | Edmonton
+ 11         | Regis     | Philbin   | Toronto
+ 12         | Rosie     | Cox       | Ottawa
+(6 rows)
+
+SELECT * FROM Team;
+ teamid |   teamcity   |  teamname
+--------+--------------+-------------
+ 18     | London       | Knights
+ 19     | Chicago      | Black Hawks
+ 08     | Philadelphia | Flyers
+ 11     | Detroit      | Red Wings
+ 99     | Colorado     | Avalanche
+ 88     | New York     | Rangers
+ 78     | Ottawa       | Senators
+ 66     | Edmonton     | Oilers
+ 69     | Vancouver    | Darkmemes
+ 12     | Toronto      | Maple Leafs
+(10 rows)
+
+DELETE FROM TEAM WHERE Team.teamid NOT IN(SELECT teamid FROM Plays);
+DELETE 5
+SELECT * FROM Team;
+ teamid | teamcity |  teamname
+--------+----------+-------------
+ 11     | Detroit  | Red Wings
+ 88     | New York | Rangers
+ 78     | Ottawa   | Senators
+ 66     | Edmonton | Oilers
+ 12     | Toronto  | Maple Leafs
+(5 rows)
+
+SELECT g.gameid, g.gamecity, t.teamcity, t.teamname, p.score
+FROM Plays p
+JOIN Team t on t.teamid = p.teamID
+JOIN Game g on g.gameid = p.gameID;
+ gameid | gamecity | teamcity |  teamname   | score
+--------+----------+----------+-------------+-------
+ 21     | Toronto  | Detroit  | Red Wings   |     2
+ 31     | Toronto  | Edmonton | Oilers      |     2
+ 12     | Ottawa   | Ottawa   | Senators    |     2
+ 12     | Ottawa   | New York | Rangers     |     3
+ 15     | New York | New York | Rangers     |     1
+ 15     | New York | Detroit  | Red Wings   |     2
+ 13     | New York | Edmonton | Oilers      |     5
+ 10     | Ottawa   | Edmonton | Oilers      |     4
+ 10     | Ottawa   | New York | Rangers     |     2
+ 14     | Toronto  | Detroit  | Red Wings   |     1
+ 21     | Toronto  | Toronto  | Maple Leafs |     3
+ 31     | Toronto  | Toronto  | Maple Leafs |     3
+ 13     | New York | Toronto  | Maple Leafs |     3
+ 14     | Toronto  | Toronto  | Maple Leafs |     3
+(14 rows)
+
+DELETE FROM Team WHERE Team.teamname='Maple Leafs';
+DELETE 1
+SELECT g.gameid, g.gamecity, t.teamcity, t.teamname, p.score
+FROM Plays p
+JOIN Team t on t.teamid = p.teamID
+JOIN Game g on g.gameid = p.gameID;
+ gameid | gamecity | teamcity | teamname  | score
+--------+----------+----------+-----------+-------
+ 21     | Toronto  | Detroit  | Red Wings |     2
+ 31     | Toronto  | Edmonton | Oilers    |     2
+ 12     | Ottawa   | Ottawa   | Senators  |     2
+ 12     | Ottawa   | New York | Rangers   |     3
+ 15     | New York | New York | Rangers   |     1
+ 15     | New York | Detroit  | Red Wings |     2
+ 13     | New York | Edmonton | Oilers    |     5
+ 10     | Ottawa   | Edmonton | Oilers    |     4
+ 10     | Ottawa   | New York | Rangers   |     2
+ 14     | Toronto  | Detroit  | Red Wings |     1
+(10 rows)
+
+/* ON DELETE CASCADE from ("ALTER TABLE Plays ADD CONSTRAINT TeamID FOREIGN KEY (TeamID) REFERENCES Team(TeamID) ON CASCADE") removes games that were played by deleted teams. "ON DELETE CASCADE" violates foreign key constraint 'TeamID' on table 'Plays' by updating of deleting on table 'team'.*/

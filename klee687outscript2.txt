@@ -1,0 +1,281 @@
+\c klee687assign2db
+You are now connected to database "klee687assign2db" as user "klee687".
+\COPY Team FROM /gaul/s1/student/2016/klee687/team.txt (DELIMITER('|'));
+INSERT INTO Team VALUES('99','Colorado','Avalanche');
+INSERT 0 1
+INSERT INTO Team VALUES('88','New York','Rangers');
+INSERT 0 1
+INSERT INTO Team VALUES('78','Ottawa','Senators');
+INSERT 0 1
+INSERT INTO Team VALUES('66','Edmonton','Oilers');
+INSERT 0 1
+INSERT INTO Team VALUES('69','Vancouver','Darkmemes');
+INSERT 0 1
+INSERT INTO RefsOfficial VALUES('99', 'Hugh', 'Grant', 'Toronto');
+INSERT 0 1
+INSERT INTO RefsOfficial VALUES('22', 'Courtney', 'Cox', 'New York');
+INSERT 0 1
+INSERT INTO RefsOfficial VALUES('33', 'Rosie', 'Odonnell', 'Ottawa');
+INSERT 0 1
+INSERT INTO RefsOfficial VALUES('66', 'David', 'Letterman', 'Edmonton');
+INSERT 0 1
+INSERT INTO RefsOfficial VALUES('11', 'Regis', 'Philbin', 'Toronto');
+INSERT 0 1
+INSERT INTO RefsOfficial VALUES('12', 'Rosie', 'Cox', 'Ottawa');
+INSERT 0 1
+INSERT INTO RefsOfficial VALUES('55', 'Hangry','Banana','Brampton');
+INSERT 0 1
+INSERT INTO Game VALUES('21','Toronto','Feb 18, 2018','11');
+INSERT 0 1
+INSERT INTO Game VALUES('31','Toronto','Dec 20, 2018','33');
+INSERT 0 1
+INSERT INTO Game VALUES('12','Ottawa','Dec 24, 2018','22');
+INSERT 0 1
+INSERT INTO Game VALUES('15','New York','Dec 20, 2018','11');
+INSERT 0 1
+INSERT INTO Game VALUES('13','New York','Jan 7, 2018','12');
+INSERT 0 1
+INSERT INTO Game VALUES('10','Ottawa','Dec 20, 2018','12');
+INSERT 0 1
+INSERT INTO Game VALUES('14','Toronto','Jan 8, 2018','33');
+INSERT 0 1
+INSERT INTO Plays VALUES('21','12','3');
+INSERT 0 1
+INSERT INTO Plays VALUES('21','11','2');
+INSERT 0 1
+INSERT INTO Plays VALUES('31','12','6');
+INSERT 0 1
+INSERT INTO Plays VALUES('31','66','2');
+INSERT 0 1
+INSERT INTO Plays VALUES('12','78','2');
+INSERT 0 1
+INSERT INTO Plays VALUES('12','88','3');
+INSERT 0 1
+INSERT INTO Plays VALUES('15','88','1');
+INSERT 0 1
+INSERT INTO Plays VALUES('15','11','2');
+INSERT 0 1
+INSERT INTO Plays VALUES('13','66','5');
+INSERT 0 1
+INSERT INTO Plays VALUES('13','12','2');
+INSERT 0 1
+INSERT INTO Plays VALUES('10','66','4');
+INSERT 0 1
+INSERT INTO Plays VALUES('10','88','2');
+INSERT 0 1
+INSERT INTO Plays VALUES('14','12','3');
+INSERT 0 1
+INSERT INTO Plays VALUES('14','11','1');
+INSERT 0 1
+INSERT INTO OfficialRegular VALUES('21','11');
+INSERT 0 1
+INSERT INTO OfficialRegular VALUES('21','12');
+INSERT 0 1
+INSERT INTO OfficialRegular VALUES('31','33');
+INSERT 0 1
+INSERT INTO OfficialRegular VALUES('31','22');
+INSERT 0 1
+INSERT INTO OfficialRegular VALUES('31','12');
+INSERT 0 1
+INSERT INTO OfficialRegular VALUES('12','22');
+INSERT 0 1
+INSERT INTO OfficialRegular VALUES('12','33');
+INSERT 0 1
+INSERT INTO OfficialRegular VALUES('12','66');
+INSERT 0 1
+INSERT INTO OfficialRegular VALUES('15','22');
+INSERT 0 1
+INSERT INTO OfficialRegular VALUES('15','11');
+INSERT 0 1
+INSERT INTO OfficialRegular VALUES('13','12');
+INSERT 0 1
+INSERT INTO OfficialRegular VALUES('13','33');
+INSERT 0 1
+INSERT INTO OfficialRegular VALUES('10','11');
+INSERT 0 1
+INSERT INTO OfficialRegular VALUES('10','12');
+INSERT 0 1
+INSERT INTO OfficialRegular VALUES('10','33');
+INSERT 0 1
+INSERT INTO OfficialRegular VALUES('14','33');
+INSERT 0 1
+INSERT INTO OfficialRegular VALUES('14','11');
+INSERT 0 1
+\dt
+             List of relations
+ Schema |      Name       | Type  |  Owner
+--------+-----------------+-------+---------
+ public | game            | table | klee687
+ public | officialregular | table | klee687
+ public | plays           | table | klee687
+ public | refsofficial    | table | klee687
+ public | team            | table | klee687
+(5 rows)
+
+SELECT * FROM game;
+ gameid | gamecity |    date    | headofficialid
+--------+----------+------------+----------------
+ 21     | Toronto  | 2018-02-18 | 11
+ 31     | Toronto  | 2018-12-20 | 33
+ 12     | Ottawa   | 2018-12-24 | 22
+ 15     | New York | 2018-12-20 | 11
+ 13     | New York | 2018-01-07 | 12
+ 10     | Ottawa   | 2018-12-20 | 12
+ 14     | Toronto  | 2018-01-08 | 33
+(7 rows)
+
+SELECT * FROM plays;
+ gameid | teamid | score
+--------+--------+-------
+ 21     | 12     |     3
+ 21     | 11     |     2
+ 31     | 12     |     6
+ 31     | 66     |     2
+ 12     | 78     |     2
+ 12     | 88     |     3
+ 15     | 88     |     1
+ 15     | 11     |     2
+ 13     | 66     |     5
+ 13     | 12     |     2
+ 10     | 66     |     4
+ 10     | 88     |     2
+ 14     | 12     |     3
+ 14     | 11     |     1
+(14 rows)
+
+SELECT * FROM refsOfficial;
+ officialid | firstname | lastname  |   city
+------------+-----------+-----------+----------
+ 99         | Hugh      | Grant     | Toronto
+ 22         | Courtney  | Cox       | New York
+ 33         | Rosie     | Odonnell  | Ottawa
+ 66         | David     | Letterman | Edmonton
+ 11         | Regis     | Philbin   | Toronto
+ 12         | Rosie     | Cox       | Ottawa
+ 55         | Hangry    | Banana    | Brampton
+(7 rows)
+
+SELECT * FROM team;
+ teamid |   teamcity   |   teamname
+--------+--------------+--------------
+ 18     | London       | Knights
+ 19     | Chicago      | Black Hawks
+ 08     | Philadelphia | Flyers
+ 12     | Toronto      | Maple Leaves
+ 11     | Detroit      | Red Wings
+ 99     | Colorado     | Avalanche
+ 88     | New York     | Rangers
+ 78     | Ottawa       | Senators
+ 66     | Edmonton     | Oilers
+ 69     | Vancouver    | Darkmemes
+(10 rows)
+
+SELECT * FROM officialregular;
+ gameid | officialid
+--------+------------
+ 21     | 11
+ 21     | 12
+ 31     | 33
+ 31     | 22
+ 31     | 12
+ 12     | 22
+ 12     | 33
+ 12     | 66
+ 15     | 22
+ 15     | 11
+ 13     | 12
+ 13     | 33
+ 10     | 11
+ 10     | 12
+ 10     | 33
+ 14     | 33
+ 14     | 11
+(17 rows)
+
+UPDATE Team SET teamname='Maple Leafs' WHERE teamname='Maple Leaves';
+UPDATE 1
+UPDATE Plays SET score='3' WHERE teamID='12';
+UPDATE 4
+UPDATE Game SET date='Jan 1, 2018' FROM Officialregular r
+JOIN game g ON g.gameid = r.gameid
+JOIN Refsofficial o ON o.officialid = r.officialid WHERE r.officialid='66';
+UPDATE 7
+SELECT * FROM Game;
+ gameid | gamecity |    date    | headofficialid
+--------+----------+------------+----------------
+ 21     | Toronto  | 2018-01-01 | 11
+ 31     | Toronto  | 2018-01-01 | 33
+ 12     | Ottawa   | 2018-01-01 | 22
+ 15     | New York | 2018-01-01 | 11
+ 13     | New York | 2018-01-01 | 12
+ 10     | Ottawa   | 2018-01-01 | 12
+ 14     | Toronto  | 2018-01-01 | 33
+(7 rows)
+
+SELECT * FROM Plays;
+ gameid | teamid | score
+--------+--------+-------
+ 21     | 11     |     2
+ 31     | 66     |     2
+ 12     | 78     |     2
+ 12     | 88     |     3
+ 15     | 88     |     1
+ 15     | 11     |     2
+ 13     | 66     |     5
+ 10     | 66     |     4
+ 10     | 88     |     2
+ 14     | 11     |     1
+ 21     | 12     |     3
+ 31     | 12     |     3
+ 13     | 12     |     3
+ 14     | 12     |     3
+(14 rows)
+
+SELECT * FROM RefsOfficial;
+ officialid | firstname | lastname  |   city
+------------+-----------+-----------+----------
+ 99         | Hugh      | Grant     | Toronto
+ 22         | Courtney  | Cox       | New York
+ 33         | Rosie     | Odonnell  | Ottawa
+ 66         | David     | Letterman | Edmonton
+ 11         | Regis     | Philbin   | Toronto
+ 12         | Rosie     | Cox       | Ottawa
+ 55         | Hangry    | Banana    | Brampton
+(7 rows)
+
+SELECT * FROM Team;
+ teamid |   teamcity   |  teamname
+--------+--------------+-------------
+ 18     | London       | Knights
+ 19     | Chicago      | Black Hawks
+ 08     | Philadelphia | Flyers
+ 11     | Detroit      | Red Wings
+ 99     | Colorado     | Avalanche
+ 88     | New York     | Rangers
+ 78     | Ottawa       | Senators
+ 66     | Edmonton     | Oilers
+ 69     | Vancouver    | Darkmemes
+ 12     | Toronto      | Maple Leafs
+(10 rows)
+
+SELECT * FROM Officialregular;
+ gameid | officialid
+--------+------------
+ 21     | 11
+ 21     | 12
+ 31     | 33
+ 31     | 22
+ 31     | 12
+ 12     | 22
+ 12     | 33
+ 12     | 66
+ 15     | 22
+ 15     | 11
+ 13     | 12
+ 13     | 33
+ 10     | 11
+ 10     | 12
+ 10     | 33
+ 14     | 33
+ 14     | 11
+(17 rows)
